@@ -19,7 +19,10 @@ Dask dataframe to perform analysis.
 Pandas dataframe to read file.
 Matplotlib to plot the analysis results.
 Cookiecutter is used to create project.
-
+# code 
+The finalproject/dags folder has the airflow_dags.py file. This has finalprojectDag defined. 
+The same folder has tasks.py folder where all the task related pythin functions are defined.
+sql_scripts has the sql scripts required in the project.
 # Environment set up
 Set up a docker container with Airflow and other required packages installed
 Step 1:
