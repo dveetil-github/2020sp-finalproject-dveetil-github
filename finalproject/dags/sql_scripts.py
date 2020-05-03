@@ -15,6 +15,8 @@ import configparser
 # SONG_DATA = config.get("S3", "SONG_DATA")
 import os
 
+import psycopg2
+
 DWH_IAM_ROLE_NAME = os.environ["DWH_IAM_ROLE_NAME"]
 DB_USER = os.environ["DB_USER"]
 DB_PASSWORD = os.environ["DB_PASSWORD"]
@@ -183,3 +185,22 @@ drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songp
 data_stagg_qrys = [staging_events_copy, staging_songs_copy]
 data_transform_qrys = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert,
                         time_table_insert]
+
+def connect_to_db(f):
+    def dbConnection(*args, **kwargs):
+        # connect to database
+        conn = psycopg2.connect("host={} dbname={} user={} password={} port=5439".format(HOST, DB_NAME, DB_USER, DB_PASSWORD))
+        try:
+            fn = f(conn, *args, **kwargs)
+        except Exception:
+            conn.rollback()
+            raise
+        else:
+            print("in else commit")
+            conn.commit()
+        finally:
+            print("closing db connection")
+            conn.close()
+
+        return fn
+    return dbConnection
