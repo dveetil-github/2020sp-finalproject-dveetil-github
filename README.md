@@ -53,3 +53,5 @@ Turn it On and Trigger the dag.
 This Dag will follow the path based on the branch_task check
 If the data ready for analysis, it will skip createTables, dataStaging and dataTransformation
 If not, it will run the tasks for createTables, dataStaging, dataTransformation, followed by performAnalysis, Visualization
+
+https://github.com/dveetil-github/2020sp-finalproject-dveetil-github/blob/develop/Dag_success.PNG
