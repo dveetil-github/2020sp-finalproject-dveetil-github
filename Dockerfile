@@ -22,8 +22,8 @@ RUN pip install boto3
 RUN pip install matplotlib
 
 USER airflow
-mkdir /usr/local/airflow/data
-mkdir /usr/local/airflow/completed
+RUN  mkdir /usr/local/airflow/data
+RUN mkdir /usr/local/airflow/completed
 # Just for documentation. Expose webserver
 EXPOSE 8080
 

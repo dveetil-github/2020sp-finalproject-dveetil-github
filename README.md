@@ -23,6 +23,11 @@ Cookiecutter is used to create project.
 The finalproject/dags folder has the airflow_dags.py file. This has finalprojectDag defined. 
 The same folder has tasks.py folder where all the task related pythin functions are defined.
 sql_scripts has the sql scripts required in the project.
+# Technologies used 
+Docker - airflow server is running in docker
+Apache airflow
+Redshift - 2 node cluster running in AWS
+S3 - the data files that are read for the data pipeline reside in here
 # Environment set up
 Set up a docker container with Airflow and other required packages installed
 Step 1:
@@ -55,3 +60,9 @@ If the data ready for analysis, it will skip createTables, dataStaging and dataT
 If not, it will run the tasks for createTables, dataStaging, dataTransformation, followed by performAnalysis, Visualization
 
 https://github.com/dveetil-github/2020sp-finalproject-dveetil-github/blob/develop/Dag_success.PNG
+
+# Comparison with Luigi
+Apache Airflow has nice UI 
+Has built in scheduler
+Can easily test DAGs
+Luigi scheduling is with cron

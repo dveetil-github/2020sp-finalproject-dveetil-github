@@ -98,7 +98,6 @@ continue_op = DummyOperator(task_id='continue_task', dag=finalprojectDag)
 
 branch_op >> [createTablesTask , continue_op]
 createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask
-# performAnalysisTask >> VisualizationTask
 continue_op >> performAnalysisTask >> VisualizationTask
 
 # if __name__ == '__main__':
@@ -113,52 +112,3 @@ continue_op >> performAnalysisTask >> VisualizationTask
 
 
 
-
-##8056 staging_events
-## 5242 staging_songs
-## select count(*),level from public."songplays" group by level;
-## select count(*), song_id from public.songplays group  by song_id having count(*) > 2;
-## select count(*), sp.song_id,s.title  from public.songplays sp, public.songs s where sp.song_id=s.song_id  group  by sp.song_id, s.title having count(*) > 2;
-
-## do analysis, write to a parquet file using atomic write, then visualize using matplotlib
-# createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask
-# branch_op >> [createTablesTask , continue_op]
-# createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask
-# continue_op >> performAnalysisTask >> VisualizationTask
-
-# branch_op >> createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask
-# branch_op >> performAnalysisTask >> VisualizationTask
-
-# def showVisual():
-#     # data = pd.read_csv("results.csv")
-#     conn_string = "postgresql://{}:{}@{}:{}/{}".format(DB_USER, DB_PASSWORD, HOST, DB_PORT, DB_NAME)
-#     engine = create_engine(conn_string)
-#     df = pd.read_sql_query("select count(*), sp.song_id,s.title  from public.songplays sp, public.songs s where sp.song_id=s.song_id  group  by sp.song_id, s.title having count(*) > 2;", engine)
-#     dest_file = os.path.join(os.getcwd(), 'data', "res.parquet")
-#     with atomic_write(dest_file) as f:
-#         df.to_csv(f.name)
-#     import matplotlib.pyplot as plt
-#     plt.plot([1, 2, 3, 4])
-#     plt.ylabel('some numbers')
-#     plt.savefig('books_read.png')
-
-
-# from airflow.utils.email import send_email
-# def failure_email(context):
-#     email_title = "Airflow Task {{ task.task_id }} Failed"
-#     email_body = "{{ task.task_id }} in {{ dag.dag_id }} failed."
-#     send_email('deepa.veetil@gmail.com', email_title, email_body)
-#
-# def build_email(**context):
-#         email_op = EmailOperator(
-#             task_id='send_email',
-#             to="deepa.veetil@gmail.com",
-#             subject="Test Email Please Ignore",
-#             html_content=None,
-#         )
-#         email_op.execute(context)
-#
-#
-# email_op_python = PythonOperator(
-#     task_id="python_send_email", python_callable=build_email, provide_context=True, dag=finalprojectDag
-# )
