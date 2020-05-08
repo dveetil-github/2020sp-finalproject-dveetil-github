@@ -6,6 +6,8 @@ services:
       - AWS_SECRET_ACCESS_KEY
     build: 
       context: .
+      args:
+        - CI_USER_TOKEN=${CI_USER_TOKEN}
 
     volumes:
       - .:/app
