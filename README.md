@@ -74,7 +74,7 @@ Test cases are added to test the tasks in the test_pset.py.
 
 The code is submitted as it should run from the Apache airflow UI when Trigger Dag is executed.    
 
-please do following steps to execute test cases.
+please do following steps to execute test cases.  
 step1:  
 comment out # task dependencies part of the code in airflow_dags.py as shown below.   
 CODE:  
