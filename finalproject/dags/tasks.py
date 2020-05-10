@@ -61,16 +61,24 @@ def performAnalysis():
     """
     logging.info("Started analysis")
     conn_string = "postgresql://{}:{}@{}:{}/{}".format(DB_USER, DB_PASSWORD, HOST, DB_PORT, DB_NAME)
+    # the index_col is year and npartitions is decided based on the criteria that the analysis is done for songs realesed in the last 3 years
     df1 = dd.read_sql_table('songs', conn_string, index_col='year', npartitions=3)
-    # print(df1.head())
-    df2 = dd.read_sql_table('songplays', conn_string, index_col='songplay_id', npartitions=3)
-    # print(df2.head())
+    print(df1.head())
+    #the index column is location () and divisions is done to do 13 partitions in the lexographical order of locations
+    # df2 = dd.read_sql_table('songplays', conn_string, index_col='location', divisions=list('acegikmoqsuwz'))
+    df2 = dd.read_sql_table('songplays', conn_string, index_col='level', divisions=list('fp'))
+    print("songplays")
+    print(df2.head())
+    # https://docs.dask.org/en/latest/dataframe-best-practices.html
+    # based on the instructions here, reduce to samll size by group by and then convert to pandas.
     ddf = dd.merge(df1, df2, how='inner', on='song_id').groupby('title').song_id.count().compute()
-    # res = res.sort_values(ascending=False)
-    # print(res.head())
-    dest_file = os.path.abspath('data') + '/results.csv'
+    print(ddf.head())
+    #dest_file = os.path.abspath('data') + '/results.csv'
+    dest_file = os.path.abspath('data') + '/results.parquet'
     with atomic_write(dest_file) as f:
-        ddf.to_csv(path_or_buf=f.name, header=True)
+        ddf.to_frame().to_parquet(f.name, engine='fastparquet',compression='GZIP')
+        # ddf.to_csv(path_or_buf=f.name, header=True)
+
 
     logging.info("End of analysis")
 
@@ -81,19 +89,20 @@ def Visualization():
     :return:
     """
     logging.info("starting visualization")
-    nameOfCSV = os.path.abspath('data') + '/results.csv'
-    pdf = pd.read_csv(nameOfCSV)
+    # nameOfResFile = os.path.abspath('data') + '/results.csv'
+    nameOfResFile = os.path.abspath('data') + '/results.parquet'
+    # pdf = pd.read_csv(nameOfResFile)
+    pdf = pd.read_parquet(nameOfResFile)
     pdf = pdf.sort_values(by=["song_id"], ascending=False)
     pdf = pdf.rename(columns={'song_id':'count'})
 
-    # filter_condn = pdf['song_id'] >= 5
-    # pdf = pdf.where(filter_condn)
     ax = plt.gca()
-    pdf[:5].plot(kind='bar', x='title', y='count', ax=ax)
-    #pdf.plot()
+    #pdf[:5].plot(kind='bar', x='title', y='count', ax=ax)
+    pdf['count'][:5].plot(kind='bar')
     plt.savefig('song_data.png')
     completed_folder = os.path.abspath('completed') + '/'
-    shutil.move(nameOfCSV,completed_folder)
+    shutil.move(nameOfResFile,completed_folder)
     dt = str(datetime.datetime.now())
-    os.rename(completed_folder+'results.csv', completed_folder+'results.csv'+ dt)
+    # os.rename(completed_folder+'results.csv', completed_folder+'results.csv'+ dt)
+    os.rename(completed_folder + 'results.parquet', completed_folder + 'results.parquet' + dt)
     logging.info("starting visualization")

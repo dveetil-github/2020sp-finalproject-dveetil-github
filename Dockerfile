@@ -20,6 +20,8 @@ apt-get install -y git build-essential curl wget software-properties-common zip 
 RUN pip install dask[dataframe]==2.15.0
 RUN pip install boto3
 RUN pip install matplotlib
+RUN pip install pytest
+# RUN pip install fastparquet
 
 USER airflow
 RUN  mkdir /usr/local/airflow/data
