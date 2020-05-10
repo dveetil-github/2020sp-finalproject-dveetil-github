@@ -87,7 +87,12 @@ They are for airflow to determine the dependency of tasks.
 also comment out --> start_date=datetime.datetime.now() - datetime.timedelta(days=1), and uncomment start_date=datetime.datetime.now(),  
 Other wise when test cases are executed, tasks will be added to queue.   
 
-for the test cases for test_performAnalysis--> create data directory in /usr/local/airflow/dags  
+How to run tests:  
+step 1: Login to the docker container--> docker exec -u root -it 68180290232d   bash  
+step 2: By default, you will be at the below folder and run pytest
+root@68180290232d:/usr/local/airflow# pytest
+
+tests will be executed and results will be displayed.
 
 # Comparison with Luigi
 Apache Airflow has nice UI  
