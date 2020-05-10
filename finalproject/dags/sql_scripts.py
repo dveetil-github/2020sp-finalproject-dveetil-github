@@ -187,6 +187,7 @@ data_transform_qrys = [songplay_table_insert, user_table_insert, song_table_inse
                         time_table_insert]
 
 def connect_to_db(f):
+    """this will manage the db connection commit and close"""
     def dbConnection(*args, **kwargs):
         # connect to database
         conn = psycopg2.connect("host={} dbname={} user={} password={} port=5439".format(HOST, DB_NAME, DB_USER, DB_PASSWORD))
