@@ -4,7 +4,7 @@ This project is to build data pipeline using python and automate it using Apache
 Data resides in S3 and data pipeline in python will help to make the data available in Redshift database for Analysis.   
 Used the python techniques learned in the class to build an effective data pipeline.  
 Data pipeline is automated using Apache Airflow.  
-#Tasks performed in the project
+#Tasks performed in the project  
 Using Python, read data from S3 and stage into Amazon Redshift tables.  
 Transform the data from staging tables to 'star' schema using Python and make the data ready for analysis in the database with fact and dimension tables.  
 Perform analysis and save results to a parquet file.  
@@ -19,9 +19,9 @@ Dask dataframe to perform analysis.
 Pandas dataframe to read file.  
 Matplotlib to plot the analysis results.  
 Cookiecutter is used to create project.  
-# code 
+# Code Information &nbsp 
 The finalproject/dags folder has the airflow_dags.py file. This has finalprojectDag defined.   
-The same folder has tasks.py folder where all the task related pythin functions are defined.  
+The same folder has tasks.py folder where all the task related python functions are defined.  
 sql_scripts has the sql scripts required in the project.  
 # Technologies used 
 Docker - airflow server is running in docker  
@@ -77,10 +77,10 @@ For test cases to run, please do following steps:
 
 comment out # task dependencies part of the code as shown below.   
 
-CODE:&nbsp
-branch_op >> [createTablesTask , continue_op] &nbsp
-createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask &nbsp
-continue_op >> performAnalysisTask >> VisualizationTask &nbsp
+CODE:  
+branch_op >> [createTablesTask , continue_op]  
+createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask   
+continue_op >> performAnalysisTask >> VisualizationTask   
 
 They are for airflow to determine the dependency of tasks.  
 
