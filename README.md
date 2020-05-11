@@ -70,13 +70,13 @@ Visualization task-->  the file is read and plotted a bar graph and saved into a
 https://github.com/dveetil-github/2020sp-finalproject-dveetil-github/blob/develop/Dag_success.PNG  
 
 # Testing
-Test cases are added to test the tasks in the test_pset.py.  
+Test cases are added to test the tasks in the test_pset.py.    
+
 The code is submitted as it should run from the Apache airflow UI when Trigger Dag is executed.    
 
-For test cases to run, please do following steps:  
-
-comment out # task dependencies part of the code as shown below.   
-
+please do following steps to execute test cases.  
+step1:  
+comment out # task dependencies part of the code in airflow_dags.py as shown below.   
 CODE:  
 branch_op >> [createTablesTask , continue_op]  
 createTablesTask >> dataStagingTask  >> dataTransformationTask >> performAnalysisTask >> VisualizationTask   
@@ -84,10 +84,16 @@ continue_op >> performAnalysisTask >> VisualizationTask
 
 They are for airflow to determine the dependency of tasks.  
 
-also comment out --> start_date=datetime.datetime.now() - datetime.timedelta(days=1), and uncomment start_date=datetime.datetime.now(),  
+step2:  
+comment out --> start_date=datetime.datetime.now() - datetime.timedelta(days=1), and uncomment start_date=datetime.datetime.now(),  
 Other wise when test cases are executed, tasks will be added to queue.   
 
-for the test cases for test_performAnalysis--> create data directory in /usr/local/airflow/dags  
+How to run tests:  
+step 1: Login to the docker container--> docker exec -u root -it 68180290232d   bash  
+step 2: By default, you will be at the below folder and run pytest
+root@68180290232d:/usr/local/airflow# pytest
+
+tests will be executed and results will be displayed.
 
 # Comparison with Luigi
 Apache Airflow has nice UI  
